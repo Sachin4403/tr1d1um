@@ -228,8 +228,11 @@ func encodeResponse(ctx context.Context, w http.ResponseWriter, response interfa
 		var d struct {
 			StatusCode int `json:"statusCode"`
 		}
-
-		w.Header().Set("Content-Type", "application/json")
+		if wrpModel.ContentType == "" || wrpModel.ContentType == "json" {
+			w.Header().Set("Content-Type", "application/json")
+		} else {
+			w.Header().Set("Content-Type", wrpModel.ContentType)
+		}
 		// use the device response status code if it's within 520-599 (inclusive) or 403
 		// https://github.com/xmidt-org/tr1d1um/issues/354
 		// https://github.com/xmidt-org/tr1d1um/issues/397
